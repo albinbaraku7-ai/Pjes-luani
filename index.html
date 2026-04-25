@@ -5,49 +5,46 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Auto Pjes Luani</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Barlow:wght@300;400;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
 :root{
-  --bl:#04060d;
-  --dk:#0d1222;
-  --ac:#e63946;
-  --ac2:#c1121f;
-  --sl:#94a3b8;
-  --wh:#e8edf5;
+  --bg:#0d1117;
+  --card:#161b22;
+  --red:#e63946;
+  --text:#e6edf3;
 }
 
 body{
   font-family:'Barlow',sans-serif;
-  background:var(--bl);
-  color:var(--wh);
+  background:var(--bg);
+  color:var(--text);
 }
 
 /* LOGIN */
-#LP{
+#login{
   position:fixed;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:var(--bl);
 }
 
 .box{
-  background:var(--dk);
+  background:var(--card);
   padding:30px;
   border-radius:12px;
   width:300px;
   text-align:center;
-  border:1px solid rgba(230,57,70,.3);
+  border:1px solid #333;
 }
 
 input{
   width:100%;
-  padding:10px;
-  margin-top:10px;
+  padding:12px;
+  margin-top:15px;
   border-radius:8px;
   border:1px solid #333;
   background:#000;
@@ -58,15 +55,24 @@ button{
   width:100%;
   padding:12px;
   margin-top:15px;
-  background:var(--ac);
+  background:var(--red);
   border:none;
   color:#fff;
   font-weight:bold;
   cursor:pointer;
 }
 
+.error{
+  color:red;
+  margin-top:10px;
+  display:none;
+}
+
 /* APP */
-#APP{display:none;padding:20px}
+#app{
+  display:none;
+  padding:20px;
+}
 
 .header{
   display:flex;
@@ -81,34 +87,38 @@ button{
 }
 
 .card{
-  background:var(--dk);
+  background:var(--card);
   padding:15px;
   border-radius:10px;
-  border:1px solid rgba(230,57,70,.2);
+  border:1px solid #333;
 }
 
 .price{
-  color:var(--ac);
+  color:var(--red);
   font-weight:bold;
 }
-
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="LP">
+<div id="login">
   <div class="box">
     <h2>HYRJE</h2>
-    <input type="password" id="pw" placeholder="Fjalëkalimi">
+    <input 
+      type="password" 
+      id="pw" 
+      placeholder="Fjalëkalimi"
+      onkeydown="if(event.key==='Enter') login()"
+    >
     <button onclick="login()">HYR</button>
-    <p id="err" style="color:red;margin-top:10px;display:none;">Gabim!</p>
+    <div class="error" id="err">Fjalëkalimi gabim!</div>
   </div>
 </div>
 
 <!-- APP -->
-<div id="APP">
+<div id="app">
 
 <div class="header">
   <h2>Auto Pjes Luani</h2>
@@ -129,7 +139,7 @@ button{
 
 <script>
 
-// DATABASE (localStorage)
+// DB
 let DB = JSON.parse(localStorage.getItem("apl") || '{"pw":"1234","parts":[]}');
 
 function save(){
@@ -138,22 +148,24 @@ function save(){
 
 // LOGIN
 function login(){
-  const v = document.getElementById("pw").value;
+  const val = document.getElementById("pw").value;
+  const err = document.getElementById("err");
 
-  if(v === DB.pw){
-    document.getElementById("LP").style.display="none";
-    document.getElementById("APP").style.display="block";
+  if(val === DB.pw){
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
     render();
   }else{
-    document.getElementById("err").style.display="block";
+    err.style.display="block";
   }
 }
 
+// LOGOUT
 function logout(){
   location.reload();
 }
 
-// ADD
+// ADD PART
 function addPart(){
   const name = prompt("Emri i pjesës:");
   if(!name) return;
@@ -172,13 +184,18 @@ function addPart(){
 
 // RENDER
 function render(list){
-  const g = document.getElementById("grid");
+  const grid = document.getElementById("grid");
   const data = list || DB.parts;
 
-  g.innerHTML="";
+  grid.innerHTML="";
+
+  if(data.length === 0){
+    grid.innerHTML="<p>Nuk ka pjesë.</p>";
+    return;
+  }
 
   data.forEach((p,i)=>{
-    g.innerHTML += `
+    grid.innerHTML += `
       <div class="card">
         <h3>${p.name}</h3>
         <div class="price">€ ${p.price || "-"}</div>
@@ -192,6 +209,8 @@ function render(list){
 
 // DELETE
 function del(i){
+  if(!confirm("A je i sigurt?")) return;
+
   DB.parts.splice(i,1);
   save();
   render();
@@ -199,19 +218,17 @@ function del(i){
 
 // SEARCH
 function search(q){
-  q=q.toLowerCase();
+  q = q.toLowerCase();
 
-  const f = DB.parts.filter(p =>
+  const filtered = DB.parts.filter(p =>
     p.name.toLowerCase().includes(q)
   );
 
-  render(f);
+  render(filtered);
 }
 
 // INIT
-if(localStorage.getItem("apl")){
-  document.getElementById("LP").style.display="flex";
-}
+document.getElementById("pw").focus();
 
 </script>
 
