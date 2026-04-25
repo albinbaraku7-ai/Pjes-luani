@@ -47,7 +47,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bl);color
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(–ac);background:rgba(230,57,70,.09);box-shadow:0 0 0 3px rgba(230,57,70,.12)}
 .fg select option{background:#0d1222}
 .fg textarea{resize:vertical;min-height:60px}
-.lp-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(–ac),var(–ac2));border:none;border-radius:10px;color:#fff;font-family:‘Rajdhani’,sans-serif;font-size:.85rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(230,57,70,.35)}
+.width:100%;padding:14px;background:linear-gradient(135deg,var(–ac),var(–ac2));border:none;border-radius:10px;color:#fff;font-family:‘Rajdhani’,sans-serif;font-size:.85rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(230,57,70,.35)}
 .lp-btn::before{content:’’;position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);transition:left .5s}
 .lp-btn:hover::before{left:100%}
 .lp-btn:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(230,57,70,.55)}
@@ -277,7 +277,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bl);color
       <div class="lp-hsub">Vetëm stafi i autorizuar ka akses</div>
       <div class="fg"><label>Fjalëkalimi</label><input type="password" id="pwIn" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="lp-btn" onclick="doLogin()">HYRJA NË SISTEM</button>
-      <div class="lp-err" id="lpErr">❌ Fjalëkalimi është i gabuar!</div>
+      <div class="lp-err" id="lpErr">❌ Fjalëkalimi është i gabuar Gjigand!</div>
     </div>
   </div>
 </div>
@@ -620,7 +620,13 @@ function renderParts(filtered) {
   });
 }
 
-// FILTER inside parts page
+
+  c);
+  });
+}
+
+
+  // FILTER inside parts page
 function filterParts(q) {
   if (!q.trim()) { renderParts(); return; }
   const ql = q.toLowerCase();
