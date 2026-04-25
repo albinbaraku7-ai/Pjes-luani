@@ -624,6 +624,20 @@ function renderParts(filtered) {
   c);
   });
 }
+const firebaseConfig = {
+  apiKey: "AIzaSyCURAn1kdrdt_043S",
+  authDomain: "autopjesluani.firebaseapp.com",
+  databaseURL: "https://autopjesluani-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "autopjesluani",
+  storageBucket: "autopjesluani.appspot.com",
+  messagingSenderId: "66964303321",
+  appId: "1:669643033219:web:ccfc"
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.database();
 
 
   // FILTER inside parts page
