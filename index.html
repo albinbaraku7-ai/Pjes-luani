@@ -6,19 +6,10 @@
 <title>Auto Pjes Luani</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCURAn1kdrdt_O43STZeiamXKdpNtIX_yc",
   authDomain: "autopjesluani.firebaseapp.com",
@@ -29,26 +20,6 @@ const firebaseConfig = {
   appId: "1:669643033219:web:5928dad21a9608ebdf29b6",
   measurementId: "G-T313JFLMNX"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCURAn1kdrdt_O43STZeiamXKdpNtIX_yc",
-  authDomain: "autopjesluani.firebaseapp.com",
-  databaseURL: "https://autopjesluani-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "autopjesluani",
-  storageBucket: "autopjesluani.firebasestorage.app",
-  messagingSenderId: "669643033219",
-  appId: "1:669643033219:web:5928dad21a9608ebdf29b6",
-  measurementId: "G-T313JFLMNX"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 let app, database, dbRef;
 let useFirebase = false;
@@ -59,7 +30,7 @@ try {
   dbRef = ref(database, 'autopjes/parts');
   useFirebase = true;
 } catch(e) {
-  console.log('Firebase not configured, using localStorage');
+  console.log('Firebase not configured');
 }
 
 window._firebase = { useFirebase, database, ref, push, set, onValue, remove, update, dbRef };
@@ -94,791 +65,104 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
 ::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb { background:var(--gold2); border-radius:2px; }
 
-/* ── NOISE TEXTURE OVERLAY ── */
 body::before {
   content:'';
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity:1;
 }
 
-/* ── AMBIENT GLOW ── */
-.amb-glow {
-  position:fixed; pointer-events:none; z-index:0; border-radius:50%;
-  filter:blur(120px); opacity:.12;
-}
+.amb-glow { position:fixed; pointer-events:none; z-index:0; border-radius:50%; filter:blur(120px); opacity:.12; }
 .amb-1 { width:600px; height:600px; background:var(--gold); top:-200px; right:-200px; }
 .amb-2 { width:500px; height:500px; background:var(--ruby); bottom:-150px; left:-150px; }
 
-/* ═══════════════════════════ LOGIN ═══════════════════════════ */
-#LP {
-  position:fixed; inset:0; z-index:9999;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--bg); overflow:hidden;
-  transition:opacity .8s cubic-bezier(.4,0,.2,1);
-}
-.lp-logo-wrap {
-  text-align:center; margin-bottom:36px;
-  animation:slideUp .9s cubic-bezier(.4,0,.2,1) both;
-}
-.lp-emblem {
-  width:72px; height:72px; margin:0 auto 16px;
-  border-radius:50%;
-  background:linear-gradient(135deg, var(--gold), var(--gold2));
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 0 0 1px var(--border2), 0 0 40px rgba(212,175,55,.3);
-  position:relative;
-}
-.lp-emblem::after {
-  content:''; position:absolute; inset:4px; border-radius:50%;
-  border:1px solid rgba(255,255,255,.15);
-}
-.lp-emblem svg { width:34px; height:34px; }
-.lp-brand {
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem; font-weight:600; letter-spacing:4px;
-  color:var(--text); text-transform:uppercase;
-}
+/* LOGIN */
+#LP { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:var(--bg); transition:opacity .8s; }
+.lp-logo-wrap { text-align:center; margin-bottom:36px; }
+.lp-emblem { width:72px; height:72px; margin:0 auto 16px; border-radius:50%; background:linear-gradient(135deg, var(--gold), var(--gold2)); display:flex; align-items:center; justify-content:center; box-shadow:0 0 40px rgba(212,175,55,.3); }
+.lp-brand { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; letter-spacing:4px; color:var(--text); text-transform:uppercase; }
 .lp-brand em { color:var(--gold); font-style:normal; }
-.lp-subtitle {
-  font-size:.6rem; letter-spacing:6px; color:var(--text3);
-  text-transform:uppercase; margin-top:5px;
-  font-family:'DM Mono',monospace;
-}
+.lp-card { width:380px; background:var(--glass); backdrop-filter:blur(40px); border:1px solid var(--border); border-radius:20px; padding:40px 36px; box-shadow:0 40px 80px var(--shadow); }
+.fg { margin-bottom:16px; text-align:left; }
+.fg label { display:block; font-size:.58rem; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; font-family:'DM Mono',monospace; }
+.fg input, .fg select { width:100%; padding:12px 16px; background:rgba(212,175,55,.04); border:1px solid var(--border); border-radius:10px; color:var(--text); outline:none; }
+.lp-btn { width:100%; padding:14px; background:linear-gradient(135deg,var(--gold),var(--gold2)); border:none; border-radius:10px; color:#050505; font-weight:700; letter-spacing:4px; text-transform:uppercase; cursor:pointer; }
+.lp-err { margin-top:12px; color:#ff6b6b; font-size:.76rem; display:none; font-family:'DM Mono',monospace; }
 
-/* Glass card */
-.lp-card {
-  width:380px;
-  background:var(--glass);
-  backdrop-filter:blur(40px) saturate(150%);
-  -webkit-backdrop-filter:blur(40px) saturate(150%);
-  border:1px solid var(--border);
-  border-radius:20px; padding:40px 36px;
-  box-shadow:0 40px 80px var(--shadow), inset 0 1px 0 rgba(255,255,255,.06);
-  animation:slideUp .9s .15s cubic-bezier(.4,0,.2,1) both;
-  position:relative; overflow:hidden;
-}
-.lp-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.lp-card-title {
-  font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:4px;
-  color:var(--gold); text-transform:uppercase; margin-bottom:4px;
-}
-.lp-card-sub { font-size:.75rem; color:var(--text2); margin-bottom:28px; }
-
-.fg { margin-bottom:16px; }
-.fg label {
-  display:block; font-size:.58rem; letter-spacing:3px; color:var(--gold);
-  text-transform:uppercase; margin-bottom:8px; font-family:'DM Mono',monospace;
-}
-.fg input, .fg select, .fg textarea {
-  width:100%; padding:12px 16px;
-  background:rgba(212,175,55,.04);
-  border:1px solid var(--border); border-radius:10px;
-  color:var(--text); font-family:'Montserrat',sans-serif; font-size:.88rem;
-  outline:none; transition:all .3s; letter-spacing:.5px;
-}
-.fg input:focus, .fg select:focus, .fg textarea:focus {
-  border-color:var(--gold);
-  background:rgba(212,175,55,.07);
-  box-shadow:0 0 0 3px rgba(212,175,55,.1);
-}
-.fg select option { background:#111; }
-.fg textarea { resize:vertical; min-height:64px; }
-
-.lp-btn {
-  width:100%; padding:14px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none; border-radius:10px;
-  color:#050505; font-family:'Montserrat',sans-serif;
-  font-size:.72rem; font-weight:700; letter-spacing:4px; text-transform:uppercase;
-  cursor:pointer; transition:all .3s; position:relative; overflow:hidden;
-}
-.lp-btn::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
-  opacity:0; transition:opacity .3s;
-}
-.lp-btn:hover::before { opacity:1; }
-.lp-btn:hover { transform:translateY(-1px); box-shadow:0 10px 30px rgba(212,175,55,.35); }
-.lp-btn:active { transform:none; }
-
-.lp-err {
-  margin-top:12px; padding:10px 14px;
-  background:rgba(139,0,0,.15); border:1px solid rgba(139,0,0,.3);
-  border-radius:8px; color:#ff6b6b; font-size:.76rem; display:none;
-  font-family:'DM Mono',monospace;
-}
-.lp-err.show { display:block; }
-
-@keyframes slideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
-
-/* ═══════════════════════════ APP ═══════════════════════════ */
+/* APP */
 #APP { display:none; min-height:100vh; position:relative; z-index:1; }
+.hdr { position:sticky; top:0; z-index:600; height:64px; background:rgba(5,5,5,.85); backdrop-filter:blur(32px); border-bottom:1px solid var(--border); padding:0 28px; display:flex; align-items:center; justify-content:between; }
+.nbtn { padding:7px 14px; background:transparent; border:1px solid transparent; color:var(--text2); cursor:pointer; font-size:.72rem; }
+.nbtn.on { color:var(--gold); border-color:var(--border2); }
+.fb-notice { text-align:center; padding:8px; background:rgba(212,175,55,.06); border-bottom:1px solid var(--border); font-family:'DM Mono',monospace; font-size:.58rem; color:var(--text3); }
 
-/* HEADER */
-.hdr {
-  position:sticky; top:0; z-index:600; height:64px;
-  background:rgba(5,5,5,.85);
-  backdrop-filter:blur(32px) saturate(140%);
-  -webkit-backdrop-filter:blur(32px) saturate(140%);
-  border-bottom:1px solid var(--border);
-  padding:0 28px;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.hdr-logo {
-  display:flex; align-items:center; gap:12px;
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.1rem; font-weight:600; letter-spacing:3px;
-  color:var(--text); text-transform:uppercase;
-}
-.hdr-logo-dot {
-  width:32px; height:32px; border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  box-shadow:0 0 16px rgba(212,175,55,.3);
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
-}
-.hdr-logo-dot svg { width:16px; height:16px; }
-.hdr-logo em { color:var(--gold); font-style:normal; }
-.hdr-nav { display:flex; align-items:center; gap:4px; }
-.nbtn {
-  padding:7px 14px; border-radius:8px;
-  border:1px solid transparent;
-  background:transparent; color:var(--text2);
-  font-family:'Montserrat',sans-serif; font-size:.72rem;
-  font-weight:500; letter-spacing:.5px; cursor:pointer;
-  transition:all .25s; display:flex; align-items:center; gap:5px;
-}
-.nbtn:hover { background:var(--glass2); border-color:var(--border); color:var(--text); }
-.nbtn.on { background:var(--glass2); border-color:var(--border2); color:var(--gold); }
-.nbtn svg { width:13px; height:13px; }
-.nbtn-exit {
-  padding:7px 14px; border-radius:8px;
-  border:1px solid rgba(139,0,0,.3); background:rgba(139,0,0,.08);
-  color:var(--ruby3); font-family:'Montserrat',sans-serif; font-size:.72rem;
-  cursor:pointer; transition:all .25s;
-}
-.nbtn-exit:hover { background:rgba(139,0,0,.2); border-color:var(--ruby3); }
+/* GRID */
+.grid { padding:20px 28px; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+.pc { background:var(--glass); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition: .3s; }
+.pc:hover { transform:translateY(-4px); border-color:var(--gold); }
+.pc-img { width:100%; height:150px; background:#111; overflow:hidden; }
+.pc-img img { width:100%; height:100%; object-fit:cover; }
+.pc-body { padding:15px; }
+.pc-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--text); }
+.pc-price { color:var(--gold); font-size:1.3rem; margin:5px 0; }
+.mo { position:fixed; inset:0; z-index:800; background:rgba(0,0,0,.8); display:none; align-items:center; justify-content:center; }
+.mo.open { display:flex; }
+.mo-box { background:#080808; border:1px solid var(--border); padding:30px; border-radius:20px; width:400px; max-height:90vh; overflow-y:auto; }
 
-/* SYNC INDICATOR */
-.sync-dot {
-  width:6px; height:6px; border-radius:50%;
-  background:var(--gold); margin-left:8px;
-  animation:syncPulse 2s infinite;
-  box-shadow:0 0 6px var(--gold);
-}
-@keyframes syncPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
-
-/* PAGES */
-.pg { display:none; animation:pgIn .4s cubic-bezier(.4,0,.2,1) both; }
-.pg.on { display:block; }
-@keyframes pgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-
-/* ─── HOME ─── */
-.home-hero {
-  position:relative; padding:80px 28px 60px;
-  text-align:center; overflow:hidden;
-}
-.home-hero::after {
-  content:''; position:absolute; bottom:0; left:10%; right:10%; height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.hero-badge {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:5px 18px;
-  border:1px solid var(--border); border-radius:20px;
-  font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:5px;
-  color:var(--gold); text-transform:uppercase; background:rgba(212,175,55,.05);
-  margin-bottom:24px;
-}
-.hero-pulse { width:5px; height:5px; border-radius:50%; background:var(--gold); animation:syncPulse 2s infinite; }
-.hero-h1 {
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3rem,7vw,5.5rem); font-weight:300; line-height:.9;
-  letter-spacing:8px; text-transform:uppercase; color:var(--text);
-}
-.hero-h1 em { display:block; color:var(--gold); font-style:italic; font-weight:300; }
-
-/* MARQUEE */
-.mq-wrap {
-  margin-top:48px; overflow:hidden;
-  padding:14px 0;
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  background:rgba(212,175,55,.02);
-  mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent);
-  -webkit-mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent);
-}
-.mq-track {
-  display:inline-flex; align-items:center; white-space:nowrap;
-  animation:mq 30s linear infinite;
-}
-.mq-track:hover { animation-play-state:paused; }
-@keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-.mq-word {
-  font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:400;
-  letter-spacing:8px; text-transform:uppercase; color:var(--text);
-  padding:0 28px; cursor:default; transition:color .3s;
-}
-.mq-word:hover { color:var(--gold); }
-.mq-sep { color:var(--gold); opacity:.4; font-size:1rem; padding:0 4px; font-family:'DM Mono',monospace; }
-
-/* HOME SEARCH */
-.home-search-sec {
-  padding:40px 28px 28px; display:flex; flex-direction:column; align-items:center;
-  border-bottom:1px solid var(--border);
-}
-.search-lbl {
-  font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:5px;
-  color:var(--text3); text-transform:uppercase; margin-bottom:14px;
-}
-.sw { position:relative; width:100%; max-width:600px; }
-.s-ico { position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--gold); pointer-events:none; }
-.s-ico svg { width:16px; height:16px; }
-.s-in {
-  width:100%; padding:16px 20px 16px 52px;
-  background:var(--glass); border:1px solid var(--border);
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  border-radius:14px; color:var(--text); font-family:'Montserrat',sans-serif;
-  font-size:.9rem; outline:none; transition:all .3s;
-}
-.s-in::placeholder { color:var(--text3); }
-.s-in:focus { border-color:var(--gold); background:rgba(212,175,55,.05); box-shadow:0 0 0 3px rgba(212,175,55,.1); }
-.s-clr { position:absolute; right:14px; top:50%; transform:translateY(-50%); background:rgba(212,175,55,.12); border:none; border-radius:6px; color:var(--text2); cursor:pointer; padding:4px 9px; font-size:.76rem; transition:all .25s; display:none; }
-.s-clr:hover { background:rgba(212,175,55,.25); color:var(--gold); }
-.s-res {
-  position:absolute; top:calc(100% + 8px); left:0; right:0;
-  background:rgba(10,10,10,.96); backdrop-filter:blur(40px);
-  border:1px solid var(--border); border-radius:14px;
-  box-shadow:0 24px 60px var(--shadow); z-index:400;
-  overflow:hidden; max-height:360px; overflow-y:auto; display:none;
-  animation:dropIn .2s cubic-bezier(.4,0,.2,1);
-}
-.s-res.open { display:block; }
-@keyframes dropIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
-.s-res-hdr { padding:9px 16px 5px; font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:4px; color:var(--text3); text-transform:uppercase; border-bottom:1px solid var(--border); }
-.s-item { display:flex; align-items:center; gap:14px; padding:12px 16px; cursor:pointer; transition:background .2s; border-bottom:1px solid rgba(212,175,55,.05); }
-.s-item:last-child { border-bottom:none; }
-.s-item:hover { background:rgba(212,175,55,.06); }
-.s-thumb { width:52px; height:40px; border-radius:8px; background:var(--bg3); flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid var(--border); }
-.s-thumb img { width:100%; height:100%; object-fit:cover; }
-.s-info { flex:1; min-width:0; }
-.s-name { font-size:.86rem; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.s-name mark { background:transparent; color:var(--gold3); font-weight:600; }
-.s-sub { font-size:.66rem; color:var(--text3); margin-top:2px; font-family:'DM Mono',monospace; }
-.s-price { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:500; color:var(--gold); flex-shrink:0; }
-.s-empty { padding:24px; text-align:center; color:var(--text3); font-size:.82rem; }
-
-/* QADD BTN */
-.qadd-btn {
-  margin-top:16px;
-  padding:11px 30px; border-radius:10px;
-  background:transparent; border:1px solid var(--border2);
-  color:var(--gold); font-family:'Montserrat',sans-serif;
-  font-size:.7rem; font-weight:600; letter-spacing:3px; text-transform:uppercase;
-  cursor:pointer; transition:all .3s; display:flex; align-items:center; gap:8px;
-}
-.qadd-btn:hover { background:rgba(212,175,55,.1); border-color:var(--gold); transform:translateY(-1px); box-shadow:0 8px 24px rgba(212,175,55,.15); }
-
-/* STATS */
-.qs { display:flex; justify-content:center; border-bottom:1px solid var(--border); }
-.qs-item {
-  flex:1; max-width:200px; text-align:center; padding:22px 12px;
-  border-right:1px solid var(--border); position:relative; overflow:hidden;
-  cursor:pointer; transition:background .3s;
-}
-.qs-item:last-child { border-right:none; cursor:default; }
-.qs-item.clickable:hover { background:rgba(212,175,55,.04); }
-.qs-item::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:0; height:1px; background:var(--gold); transition:width .4s; }
-.qs-item.clickable:hover::after { width:60%; }
-.qs-n { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:400; color:var(--gold); }
-.qs-l { font-family:'DM Mono',monospace; font-size:.55rem; letter-spacing:3px; color:var(--text3); text-transform:uppercase; margin-top:4px; }
-
-/* ─── PARTS PAGE ─── */
-.pp-top { padding:28px 28px 16px; border-bottom:1px solid var(--border); display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; }
-.pp-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; letter-spacing:3px; text-transform:uppercase; color:var(--text); }
-.pp-title em { color:var(--gold); font-style:italic; }
-.pp-sub { font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:3px; color:var(--text3); text-transform:uppercase; margin-top:4px; }
-
-/* Parts search bar */
-.pp-bar {
-  padding:16px 28px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
-}
-.pp-sw { position:relative; flex:1; min-width:220px; max-width:440px; }
-.pp-s-ico { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--gold); pointer-events:none; }
-.pp-s-ico svg { width:14px; height:14px; }
-.pp-s-in {
-  width:100%; padding:11px 14px 11px 40px;
-  background:var(--glass); border:1px solid var(--border); border-radius:10px;
-  color:var(--text); font-family:'Montserrat',sans-serif; font-size:.84rem; outline:none; transition:all .3s;
-}
-.pp-s-in::placeholder { color:var(--text3); }
-.pp-s-in:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,.1); }
-.pp-count { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:2px; color:var(--text3); white-space:nowrap; }
-.pp-count em { color:var(--gold); font-style:normal; }
-
-.tbar { padding:14px 28px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
-.btn-p {
-  padding:10px 22px; border-radius:8px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none; color:#050505;
-  font-family:'Montserrat',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:3px; text-transform:uppercase;
-  cursor:pointer; transition:all .28s; display:flex; align-items:center; gap:6px;
-}
-.btn-p:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(212,175,55,.3); }
-.btn-s {
-  padding:9px 16px; border-radius:8px; border:1px solid var(--border);
-  background:transparent; color:var(--text2); font-family:'Montserrat',sans-serif; font-size:.72rem;
-  cursor:pointer; transition:all .25s; display:flex; align-items:center; gap:5px;
-}
-.btn-s:hover { background:var(--glass2); border-color:var(--border2); color:var(--gold); }
-.btn-d {
-  padding:8px 12px; border-radius:7px; border:1px solid rgba(139,0,0,.25);
-  background:rgba(139,0,0,.07); color:#c0392b; font-size:.72rem; cursor:pointer; transition:all .25s;
-}
-.btn-d:hover { background:rgba(139,0,0,.2); border-color:var(--ruby3); }
-
-/* PARTS GRID */
-.grid { padding:20px 28px 60px; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
-
-/* PART CARD — GLASSMORPHISM */
-.pc {
-  background:var(--glass);
-  backdrop-filter:blur(24px) saturate(120%);
-  -webkit-backdrop-filter:blur(24px) saturate(120%);
-  border:1px solid var(--border); border-radius:16px;
-  overflow:hidden; transition:all .35s cubic-bezier(.4,0,.2,1);
-  animation:cardIn .4s cubic-bezier(.4,0,.2,1) both;
-  position:relative;
-}
-.pc::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background:linear-gradient(90deg,transparent,rgba(212,175,55,.5),transparent);
-  opacity:0; transition:opacity .3s;
-}
-.pc:hover { border-color:var(--border2); transform:translateY(-4px); box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px rgba(212,175,55,.08); }
-.pc:hover::before { opacity:1; }
-@keyframes cardIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
-
-.pc-img {
-  width:100%; height:158px; overflow:hidden;
-  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  display:flex; align-items:center; justify-content:center;
-  font-size:3rem; color:rgba(212,175,55,.15); position:relative;
-}
-.pc-img.has-photo { cursor:zoom-in; }
-.pc-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s; display:block; }
-.pc-img.has-photo:hover img { transform:scale(1.04); }
-.pc-zoom-badge {
-  position:absolute; bottom:8px; right:10px;
-  background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
-  border:1px solid var(--border); border-radius:6px;
-  padding:3px 8px; font-family:'DM Mono',monospace; font-size:.54rem;
-  color:var(--gold); letter-spacing:1px;
-  opacity:0; transition:opacity .25s; pointer-events:none;
-}
-.pc-img.has-photo:hover .pc-zoom-badge { opacity:1; }
-
-.pc-body { padding:16px; }
-.pc-cond {
-  display:inline-block; padding:2px 10px; border-radius:20px;
-  font-family:'DM Mono',monospace; font-size:.56rem; font-weight:500;
-  letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;
-}
-.pc-name { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:500; color:var(--text); margin-bottom:4px; line-height:1.3; }
-.pc-car { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--text3); margin-bottom:10px; letter-spacing:.5px; }
-.pc-price { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400; color:var(--gold); margin-bottom:4px; }
-.pc-date { font-family:'DM Mono',monospace; font-size:.56rem; color:var(--text3); margin-bottom:12px; letter-spacing:.5px; }
-.pc-acts { display:flex; gap:7px; }
-
-/* EMPTY */
-.empty { text-align:center; padding:80px 20px; color:var(--text3); grid-column:1/-1; }
-.empty-ico { font-size:2.5rem; margin-bottom:16px; opacity:.25; }
-.empty h3 { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:400; letter-spacing:3px; color:var(--text2); margin-bottom:8px; }
-.empty p { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:2px; }
-
-/* ─── SETTINGS ─── */
-.sw-page { max-width:460px; margin:48px auto; padding:0 20px; }
-.scard {
-  background:var(--glass); backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px);
-  border:1px solid var(--border); border-radius:18px; padding:36px 30px;
-  box-shadow:0 24px 60px var(--shadow);
-  position:relative; overflow:hidden;
-}
-.scard::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-.scard h2 { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:500; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:5px; }
-.scard>p { font-family:'DM Mono',monospace; font-size:.64rem; color:var(--text3); letter-spacing:2px; margin-bottom:24px; }
-.sdiv { height:1px; background:var(--border); margin:24px 0; }
-.msg-ok { margin-top:12px; padding:10px 14px; background:rgba(45,212,191,.08); border:1px solid rgba(45,212,191,.25); border-radius:8px; color:#2dd4bf; font-size:.76rem; display:none; font-family:'DM Mono',monospace; }
-.msg-ok.show { display:block; }
-.msg-er { margin-top:12px; padding:10px 14px; background:rgba(139,0,0,.12); border:1px solid rgba(139,0,0,.28); border-radius:8px; color:#ff6b6b; font-size:.76rem; display:none; font-family:'DM Mono',monospace; }
-.msg-er.show { display:block; }
-
-/* ─── MODAL ─── */
-.mo {
-  position:fixed; inset:0; z-index:800; padding:20px;
-  background:rgba(0,0,0,.75); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  display:none; align-items:center; justify-content:center;
-}
-.mo.open { display:flex; animation:fadeIn .25s ease; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-.mo-box {
-  background:rgba(8,8,8,.95); backdrop-filter:blur(40px);
-  border:1px solid var(--border); border-radius:20px;
-  padding:32px; width:100%; max-width:460px;
-  box-shadow:0 50px 100px rgba(0,0,0,.8);
-  max-height:90vh; overflow-y:auto;
-  position:relative; overflow-x:hidden;
-  animation:modalIn .3s cubic-bezier(.34,1.56,.64,1);
-}
-.mo-box::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-@keyframes modalIn { from{opacity:0;transform:translateY(24px) scale(.97)} to{opacity:1;transform:none} }
-.mo-box h2 { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:500; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:22px; }
-.mo-acts { display:flex; gap:10px; margin-top:20px; }
-.mo-cancel {
-  flex:1; padding:12px; border-radius:10px;
-  border:1px solid var(--border); background:transparent;
-  color:var(--text2); font-family:'Montserrat',sans-serif; font-size:.78rem; cursor:pointer; transition:all .25s;
-}
-.mo-cancel:hover { border-color:var(--text2); color:var(--text); }
-.mo-save {
-  flex:2; padding:12px; border-radius:10px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none; color:#050505;
-  font-family:'Montserrat',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:3px; text-transform:uppercase;
-  cursor:pointer; transition:all .28s; box-shadow:0 4px 16px rgba(212,175,55,.25);
-}
-.mo-save:hover { box-shadow:0 6px 24px rgba(212,175,55,.45); transform:translateY(-1px); }
-.price-wrap { position:relative; }
-.price-sym { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.1rem; }
-.price-inp { padding-left:32px !important; }
-.upl {
-  border:1px dashed var(--border2); border-radius:12px;
-  padding:20px; text-align:center; cursor:pointer; transition:all .28s;
-  background:rgba(212,175,55,.02);
-}
-.upl:hover { border-color:var(--gold); background:rgba(212,175,55,.05); }
-.upl-ico { font-size:1.8rem; margin-bottom:6px; }
-.upl p { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--text3); letter-spacing:2px; }
-.upl-prev { max-width:100%; max-height:110px; border-radius:8px; margin-top:10px; display:none; border:1px solid var(--border); }
-
-/* LIGHTBOX */
-.lb {
-  position:fixed; inset:0; z-index:9000;
-  background:rgba(0,0,0,.95); backdrop-filter:blur(20px);
-  display:none; align-items:center; justify-content:center;
-  cursor:zoom-out;
-}
-.lb.open { display:flex; animation:fadeIn .25s ease; }
-.lb img {
-  max-width:92vw; max-height:88vh;
-  border-radius:12px; border:1px solid var(--border);
-  box-shadow:0 40px 100px rgba(0,0,0,.9);
-  object-fit:contain; cursor:default;
-  animation:lbIn .3s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes lbIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
-.lb-close {
-  position:absolute; top:20px; right:24px;
-  width:40px; height:40px; border-radius:50%;
-  background:rgba(212,175,55,.12); border:1px solid var(--border2);
-  color:var(--gold); font-size:1.2rem; cursor:pointer;
-  display:flex; align-items:center; justify-content:center; transition:all .2s;
-}
-.lb-close:hover { background:rgba(212,175,55,.25); }
-
-/* CONFIRM */
-.cf-overlay {
-  position:fixed; inset:0; z-index:9500;
-  background:rgba(0,0,0,.8); backdrop-filter:blur(16px);
-  display:none; align-items:center; justify-content:center; padding:20px;
-}
-.cf-overlay.open { display:flex; animation:fadeIn .2s ease; }
-.cf-box {
-  background:rgba(8,8,8,.97); border:1px solid rgba(139,0,0,.35);
-  border-radius:20px; padding:40px 36px; width:100%; max-width:340px;
-  text-align:center; box-shadow:0 40px 80px rgba(0,0,0,.8);
-  animation:modalIn .25s cubic-bezier(.34,1.56,.64,1);
-  position:relative; overflow:hidden;
-}
-.cf-box::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(139,0,0,.6),transparent); }
-.cf-ico { font-size:2.8rem; margin-bottom:14px; }
-.cf-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:500; color:var(--text); margin-bottom:8px; letter-spacing:1px; }
-.cf-sub { font-family:'DM Mono',monospace; font-size:.64rem; color:var(--text3); margin-bottom:28px; line-height:1.6; letter-spacing:.5px; }
-.cf-btns { display:flex; gap:12px; }
-.cf-no {
-  flex:1; padding:13px; border-radius:10px;
-  border:1px solid var(--border); background:transparent;
-  color:var(--text); font-family:'Montserrat',sans-serif; font-size:.72rem; font-weight:600; letter-spacing:2px; text-transform:uppercase;
-  cursor:pointer; transition:all .25s;
-}
-.cf-no:hover { background:var(--glass2); }
-.cf-yes {
-  flex:1; padding:13px; border-radius:10px;
-  background:linear-gradient(135deg,var(--ruby),var(--ruby2));
-  border:none; color:#fff;
-  font-family:'Montserrat',sans-serif; font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-  cursor:pointer; transition:all .25s; box-shadow:0 4px 16px rgba(139,0,0,.3);
-}
-.cf-yes:hover { box-shadow:0 6px 24px rgba(139,0,0,.5); transform:translateY(-1px); }
-
-/* NOTIF */
-.notif {
-  position:fixed; bottom:24px; right:24px; z-index:9999;
-  padding:14px 20px; border-radius:12px;
-  background:rgba(10,10,10,.92); backdrop-filter:blur(20px);
-  border:1px solid var(--border); color:var(--text); font-size:.78rem;
-  box-shadow:0 16px 40px var(--shadow);
-  transform:translateX(140%); transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-  max-width:260px; font-family:'DM Mono',monospace;
-}
+/* UTILS */
+.notif { position:fixed; bottom:20px; right:20px; padding:15px; background:#111; border:1px solid var(--gold); border-radius:10px; transform:translateX(200%); transition:.4s; z-index:9999; }
 .notif.show { transform:translateX(0); }
-.notif.ok { border-color:rgba(212,175,55,.4); }
-.notif.er { border-color:rgba(139,0,0,.4); }
-
-/* FIREBASE NOTICE */
-.fb-notice {
-  text-align:center; padding:8px 20px;
-  background:rgba(212,175,55,.06); border-bottom:1px solid var(--border);
-  font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:3px;
-  color:var(--text3); text-transform:uppercase;
-}
-.fb-notice em { color:var(--gold); font-style:normal; }
 </style>
 </head>
 <body>
 
-<div class="amb-glow amb-1"></div>
-<div class="amb-glow amb-2"></div>
-
-<!-- ═══════════════ LOGIN ═══════════════ -->
 <div id="LP">
-  <div style="position:relative;z-index:2;text-align:center;width:100%;max-width:380px;padding:20px">
+  <div style="text-align:center">
     <div class="lp-logo-wrap">
-      <div class="lp-emblem">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16,3 L17.5,1 L19,3 A10,10,0,0,1,22,4.5 L24.5,3 L26,4.5 L24.5,7 A10,10,0,0,1,26,10 L28.5,11.5 L28.5,13.5 L26,15 A10,10,0,0,1,24.5,18 L26,20.5 L24.5,22 L22,20.5 A10,10,0,0,1,19,22 L17.5,24.5 L14.5,24.5 L13,22 A10,10,0,0,1,10,20.5 L7.5,22 L6,20.5 L7.5,18 A10,10,0,0,1,6,15 L3.5,13.5 L3.5,11.5 L6,10 A10,10,0,0,1,7.5,7 L6,4.5 L7.5,3 L10,4.5 A10,10,0,0,1,13,3 Z" stroke="#050505" stroke-width="1.5" stroke-linejoin="round"/>
-          <circle cx="16" cy="13" r="4" stroke="#050505" stroke-width="1.5"/>
-          <path d="M10,24 C9,23 9,21 10,20 L16,14 C15,11 15.5,8 17,6.5 C18.5,5 20.5,4.5 22,5.5 L19.5,8 C19,9 19,11 20.5,11.5 C22,12 23.5,11.5 24,10 L26.5,7.5 C27.5,9.5 27,12 25.5,13.5 C24,15 21.5,15.5 19.5,14.5 L13.5,20.5 C14.5,23 14,25.5 12.5,27 C11,28.5 8.5,29 7,28 L9.5,25.5 C10,24.5 10,23 9,22.5 C8,22 7,22.5 6.5,23.5 L4,26 C3,24 3.5,21.5 5,20 C6.5,18.5 8.5,18.5 10,20 Z" fill="#050505"/>
-        </svg>
-      </div>
       <div class="lp-brand">Auto Pjes <em>Luani</em></div>
-      <div class="lp-subtitle">Sistemi i Stafit · Akses Privat</div>
     </div>
     <div class="lp-card">
-      <div class="lp-card-title">Hyrje e Sigurt</div>
-      <div class="lp-card-sub">Vetëm stafi i autorizuar ka akses</div>
       <div class="fg">
         <label>Fjalëkalimi</label>
-        <input type="password" id="pwIn" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <input type="password" id="pwIn" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
-      <button class="lp-btn" onclick="doLogin()">Hyrja në Sistem</button>
-      <div class="lp-err" id="lpErr">Fjalëkalimi është i gabuar</div>
+      <button class="lp-btn" onclick="doLogin()">Hyr</button>
+      <div class="lp-err" id="lpErr">Gabim!</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ APP ═══════════════ -->
 <div id="APP">
+  <div class="fb-notice" id="fbNotice">⬤ Serveri Aktiv</div>
+  <header class="hdr" style="justify-content: space-between;">
+    <div style="font-weight:bold; letter-spacing:2px;">LUANI</div>
+    <nav>
+      <button class="nbtn on" onclick="showPg('home')">Ballina</button>
+      <button class="nbtn" onclick="showPg('parts')">Pjesët</button>
+      <button class="nbtn" onclick="doLogout()">Dil</button>
+    </nav>
+  </header>
 
-<div class="fb-notice" id="fbNotice">
-  <em>⬤</em> &nbsp;Lidhja me serverin është aktive — ndryshimet sinkronizohen në kohë reale
-</div>
-
-<header class="hdr">
-  <div class="hdr-logo">
-    <div class="hdr-logo-dot">
-      <svg viewBox="0 0 32 32" fill="none">
-        <path d="M16,3 L17.5,1 L19,3 A10,10,0,0,1,22,4.5 L24.5,3 L26,4.5 L24.5,7 A10,10,0,0,1,26,10 L28.5,11.5 L28.5,13.5 L26,15 A10,10,0,0,1,24.5,18 L26,20.5 L24.5,22 L22,20.5 A10,10,0,0,1,19,22 L17.5,24.5 L14.5,24.5 L13,22 A10,10,0,0,1,10,20.5 L7.5,22 L6,20.5 L7.5,18 A10,10,0,0,1,6,15 L3.5,13.5 L3.5,11.5 L6,10 A10,10,0,0,1,7.5,7 L6,4.5 L7.5,3 L10,4.5 A10,10,0,0,1,13,3 Z" stroke="#050505" stroke-width="1.5"/>
-        <circle cx="16" cy="13" r="4" stroke="#050505" stroke-width="1.5"/>
-      </svg>
-    </div>
-    <div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;letter-spacing:3px;color:var(--text)">
-        AUTO PJES <em style="color:var(--gold);font-style:normal">LUANI</em>
-      </div>
-      <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:5px;color:var(--text3)">SISTEMI I MENAXHIMIT</div>
-    </div>
-    <div class="sync-dot" title="Sinkronizim aktiv"></div>
-  </div>
-  <nav class="hdr-nav">
-    <button class="nbtn on" id="nHome" onclick="showPg('home',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12L12 3l9 9M5 10v10h4v-6h6v6h4V10"/></svg>Ballina
-    </button>
-    <button class="nbtn" id="nParts" onclick="showPg('parts',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Pjesët
-    </button>
-    <button class="nbtn" onclick="showPg('settings',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Cilësimet
-    </button>
-    <button class="nbtn-exit" onclick="doLogout()">⏻ Dil</button>
-  </nav>
-</header>
-
-<!-- HOME -->
-<div class="pg on" id="pgHome">
-  <div class="home-hero">
-    <div class="hero-badge"><div class="hero-pulse"></div>Stafi Privat · Real-Time</div>
-    <div class="hero-h1">Auto Pjes<em>Luani</em></div>
-    <div class="mq-wrap">
-      <div class="mq-track">
-        <span class="mq-word">Krilla</span><span class="mq-sep">·</span>
-        <span class="mq-word">Hauba</span><span class="mq-sep">·</span>
-        <span class="mq-word">Fara</span><span class="mq-sep">·</span>
-        <span class="mq-word">Branika</span><span class="mq-sep">·</span>
-        <span class="mq-word">Shofershajbne</span><span class="mq-sep">·</span>
-        <span class="mq-word">Krilla</span><span class="mq-sep">·</span>
-        <span class="mq-word">Hauba</span><span class="mq-sep">·</span>
-        <span class="mq-word">Fara</span><span class="mq-sep">·</span>
-        <span class="mq-word">Branika</span><span class="mq-sep">·</span>
-        <span class="mq-word">Shofershajbne</span><span class="mq-sep">·</span>
-        <span class="mq-word">Krilla</span><span class="mq-sep">·</span>
-        <span class="mq-word">Hauba</span><span class="mq-sep">·</span>
-        <span class="mq-word">Fara</span><span class="mq-sep">·</span>
-        <span class="mq-word">Branika</span><span class="mq-sep">·</span>
-        <span class="mq-word">Shofershajbne</span><span class="mq-sep">·</span>
-        <span class="mq-word">Krilla</span><span class="mq-sep">·</span>
-        <span class="mq-word">Hauba</span><span class="mq-sep">·</span>
-        <span class="mq-word">Fara</span><span class="mq-sep">·</span>
-        <span class="mq-word">Branika</span><span class="mq-sep">·</span>
-        <span class="mq-word">Shofershajbne</span><span class="mq-sep">·</span>
-      </div>
-    </div>
+  <div id="pgHome" class="pg on" style="padding:40px; text-align:center;">
+    <h1 style="font-family:'Cormorant Garamond'; font-size:3rem; color:var(--gold);">Mirësevini</h1>
+    <button class="lp-btn" style="width:200px; margin-top:20px;" onclick="openAP()">+ Shto Pjesë</button>
+    <div id="stP" style="margin-top:20px; color:var(--text2);">0 Pjesë në total</div>
   </div>
 
-  <div class="home-search-sec">
-    <div class="search-lbl">Kërko Pjesën</div>
-    <div class="sw">
-      <div class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      <input class="s-in" id="sIn" type="text" placeholder="Shkruaj: Audi, Branika, BMW 2018..." oninput="doHomeSearch(this.value)" onfocus="doHomeSearch(this.value)">
-      <button class="s-clr" id="sClr" onclick="clearHS()">✕</button>
-      <div class="s-res" id="sRes"></div>
-    </div>
-    <button class="qadd-btn" onclick="openAP()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Shto Pjesën
-    </button>
-  </div>
-
-  <div class="qs">
-    <div class="qs-item clickable" onclick="goToParts()" title="Shfaq të gjitha pjesët">
-      <div class="qs-n" id="stP">0</div><div class="qs-l">Pjesë Gjithsej</div>
-    </div>
-    <div class="qs-item clickable" onclick="goToParts()" title="Shfaq listën">
-      <div class="qs-n" id="stNew">0</div><div class="qs-l">Gjendje E Re</div>
-    </div>
-    <div class="qs-item">
-      <div class="qs-n">24/7</div><div class="qs-l">Akses</div>
-    </div>
+  <div id="pgParts" class="pg" style="display:none;">
+    <div class="grid" id="partsGrid"></div>
   </div>
 </div>
 
-<!-- PARTS -->
-<div class="pg" id="pgParts">
-  <div class="pp-top">
-    <div>
-      <div class="pp-title">Lista e <em>Pjesëve</em></div>
-      <div class="pp-sub">Të gjitha pjesët · Sinkronizim në kohë reale</div>
-    </div>
-  </div>
-  <div class="pp-bar">
-    <div class="pp-sw">
-      <div class="pp-s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      <input class="pp-s-in" id="ppQ" type="text" placeholder="Kërko: Audi, Hauba, BMW..." oninput="filterParts(this.value)">
-    </div>
-    <div class="pp-count" id="ppCnt"></div>
-  </div>
-  <div class="tbar">
-    <button class="btn-p" onclick="openAP()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Shto Pjesë
-    </button>
-  </div>
-  <div class="grid" id="partsGrid"></div>
-</div>
-
-<!-- SETTINGS -->
-<div class="pg" id="pgSettings">
-  <div class="sw-page">
-    <div class="scard">
-      <h2>Ndrysho Fjalëkalimin</h2>
-      <p>Vendos fjalëkalimin aktual, pastaj të riun</p>
-      <div class="fg"><label>Fjalëkalimi Aktual</label><input type="password" id="pwCur" placeholder="••••••••"></div>
-      <div class="fg"><label>Fjalëkalimi i Ri</label><input type="password" id="pwNew" placeholder="••••••••"></div>
-      <div class="fg"><label>Konfirmo Fjalëkalimin e Ri</label><input type="password" id="pwConf" placeholder="••••••••"></div>
-      <button class="btn-p" onclick="changePw()" style="width:100%;justify-content:center">Ndrysho Fjalëkalimin</button>
-      <div class="msg-ok" id="pwOk">✓ Fjalëkalimi u ndryshua</div>
-      <div class="msg-er" id="pwErr"></div>
-      <div class="sdiv"></div>
-      <h2 style="margin-bottom:8px">Firebase Setup</h2>
-      <p style="margin-bottom:0;line-height:1.8">
-        Për Firebase aktiv: krijo projekt falas në <em style="color:var(--gold)">console.firebase.google.com</em>, 
-        aktivizo Realtime Database, dhe kopjo config-un në kodin e faqes.<br>
-        Deri atëherë të dhënat ruhen lokalisht.
-      </p>
-    </div>
-  </div>
-</div>
-
-</div><!-- /APP -->
-
-<!-- PART MODAL -->
 <div class="mo" id="mP">
   <div class="mo-box">
-    <h2 id="mPt">Shto Pjesë të Re</h2>
-    <div class="fg"><label>Lloji i Veturës</label><input type="text" id="pCar" placeholder="Audi A6, BMW 320i, Mercedes C300..."></div>
-    <div class="fg"><label>Viti i Prodhimit</label><input type="number" id="pYear" placeholder="2018" min="1970" max="2030"></div>
-    <div class="fg"><label>Emri i Pjesës</label><input type="text" id="pName" placeholder="Kapela e Timonit, Branika..."></div>
-    <div class="fg"><label>Gjendja e Pjesës</label>
-      <select id="pCond">
-        <option value="">— Zgjidh gjendjen —</option>
-        <option value="E Re">E Re</option>
-        <option value="Si e Re">Si e Re</option>
-        <option value="Shumë Mirë">Shumë Mirë</option>
-        <option value="Mirë">Mirë</option>
-        <option value="Mesatare">Mesatare</option>
-        <option value="Për Riparim">Për Riparim</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label>Çmimi <span style="color:var(--text3);font-size:.7rem">(€)</span></label>
-      <div class="price-wrap">
-        <span class="price-sym">€</span>
-        <input type="number" id="pPrice" class="price-inp" placeholder="0.00" step="0.01">
-      </div>
-    </div>
-    <div class="fg"><label>Foto</label>
-      <div class="upl" onclick="document.getElementById('pPhoto').click()">
-        <div class="upl-ico">📷</div>
-        <p>Kliko për të ngarkuar foto</p>
-        <img class="upl-prev" id="pPrev">
-        <input type="file" id="pPhoto" accept="image/*" style="display:none" onchange="handleImg(event)">
-      </div>
-    </div>
-    <div class="mo-acts">
-      <button class="mo-cancel" onclick="closeMo('mP')">Anulo</button>
-      <button class="mo-save" onclick="saveP()">Ruaj Pjesën</button>
-    </div>
-  </div>
-</div>
-
-<!-- LIGHTBOX -->
-<div class="lb" id="lb" onclick="closeLB()">
-  <button class="lb-close" onclick="closeLB()">✕</button>
-  <img id="lbImg" alt="" onclick="event.stopPropagation()">
-</div>
-
-<!-- CONFIRM -->
-<div class="cf-overlay" id="cfOv">
-  <div class="cf-box">
-    <div class="cf-ico">🗑</div>
-    <div class="cf-title">A je i sigurt?</div>
-    <div class="cf-sub">A je i sigurt që don me fshi këtë pjesë?<br>Ky veprim nuk mund të kthehet mbrapsht.</div>
-    <div class="cf-btns">
-      <button class="cf-no" onclick="closeCF()">Jo</button>
-      <button class="cf-yes" id="cfYes">Po, Fshi</button>
+    <h2 style="color:var(--gold); margin-bottom:20px;">Shto Pjesë</h2>
+    <div class="fg"><label>Veturat</label><input type="text" id="pCar"></div>
+    <div class="fg"><label>Emri Pjesës</label><input type="text" id="pName"></div>
+    <div class="fg"><label>Çmimi €</label><input type="number" id="pPrice"></div>
+    <div class="fg"><label>Foto</label><input type="file" accept="image/*" onchange="handleImg(event)"></div>
+    <div style="display:flex; gap:10px;">
+        <button class="lp-btn" onclick="saveP()">Ruaj</button>
+        <button class="lp-btn" style="background:grey" onclick="closeMo()">Anulo</button>
     </div>
   </div>
 </div>
@@ -886,287 +170,108 @@ body::before {
 <div class="notif" id="notif"></div>
 
 <script>
-// ══════════════════════════════════════════
-// DATA LAYER — Firebase or localStorage fallback
-// ══════════════════════════════════════════
-let DB = JSON.parse(localStorage.getItem('apl_gold') || '{"parts":[],"pw":"luani123"}');
-let editP = null, curPhoto = null, _cfCb = null;
-let _fbParts = {}; // Firebase snapshot
+let DB = { parts: [], pw: "luani123" };
+let curPhoto = null;
 
-const es = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-function saveLocal() { localStorage.setItem('apl_gold', JSON.stringify(DB)); }
-
-// Init Firebase listener once logged in
+// FIREBASE INTEGRATION
 function initFirebase() {
-  const fb = window._firebase;
-  if (!fb || !fb.useFirebase) {
-    document.getElementById('fbNotice').innerHTML = 
-      '⬤ &nbsp;Modalitet lokal — ndryshimet ruhen vetëm në këtë pajisje · <em>Konfiguro Firebase për sinkronizim real</em>';
-    return;
-  }
-  fb.onValue(fb.dbRef, snapshot => {
-    _fbParts = snapshot.val() || {};
-    DB.parts = Object.entries(_fbParts).map(([id, val]) => ({ ...val, _id: id }));
-    saveLocal();
-    updateStats();
-    renderParts();
-  });
+    const fb = window._firebase;
+    if (fb && fb.useFirebase) {
+        fb.onValue(fb.dbRef, snap => {
+            const data = snap.val() || {};
+            DB.parts = Object.entries(data).map(([id, val]) => ({ ...val, _id: id }));
+            renderParts();
+            document.getElementById('stP').textContent = DB.parts.length + " Pjesë në total";
+        });
+    }
 }
 
-function pushPart(part) {
-  const fb = window._firebase;
-  if (fb && fb.useFirebase) {
-    const newRef = fb.push(fb.dbRef);
-    fb.set(newRef, part);
-  } else {
-    DB.parts.push(part);
-    saveLocal();
-    updateStats(); renderParts();
-  }
-}
-function updatePart(id, part) {
-  const fb = window._firebase;
-  if (fb && fb.useFirebase && id) {
-    const r = fb.ref(fb.database, 'autopjes/parts/' + id);
-    fb.set(r, part);
-  } else {
-    DB.parts[editP] = part;
-    saveLocal();
-    updateStats(); renderParts();
-  }
-}
-function removePart(id, localIdx) {
-  const fb = window._firebase;
-  if (fb && fb.useFirebase && id) {
-    const r = fb.ref(fb.database, 'autopjes/parts/' + id);
-    fb.remove(r);
-  } else {
-    DB.parts.splice(localIdx, 1);
-    saveLocal();
-    updateStats(); renderParts();
-  }
+async function handleImg(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // Resize image to keep database small
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const max = 600;
+            let w = img.width, h = img.height;
+            if (w > h) { if (w > max) { h *= max/w; w = max; } }
+            else { if (h > max) { w *= max/h; h = max; } }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            curPhoto = canvas.toDataURL('image/jpeg', 0.7);
+        };
+    };
+    reader.readAsDataURL(file);
 }
 
-// ══════════ HELPERS ══════════
-function fmtDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
-function condColor(c) {
-  return {
-    'E Re':'#D4AF37','Si e Re':'#b8962e','Shumë Mirë':'#a3e635',
-    'Mirë':'#2dd4bf','Mesatare':'#f4a261','Për Riparim':'#ff6b6b'
-  }[c] || '#94a3b8';
-}
-function updateStats() {
-  document.getElementById('stP').textContent = DB.parts.length;
-  document.getElementById('stNew').textContent = DB.parts.filter(p=>p.cond==='E Re'||p.cond==='Si e Re').length;
+function renderParts() {
+    const g = document.getElementById('partsGrid');
+    g.innerHTML = DB.parts.map((p, i) => `
+        <div class="pc">
+            <div class="pc-img">${p.photo ? `<img src="${p.photo}">` : '⚙'}</div>
+            <div class="pc-body">
+                <div class="pc-name">${p.name}</div>
+                <div style="font-size:0.7rem; color:grey;">${p.car || ''}</div>
+                <div class="pc-price">€${p.price}</div>
+                <button onclick="delP('${p._id}', ${i})" style="color:red; background:none; border:none; cursor:pointer;">Fshi</button>
+            </div>
+        </div>
+    `).join('');
 }
 
-// ══════════ AUTH ══════════
-function doLogin() {
-  const v = document.getElementById('pwIn').value;
-  if (v === DB.pw) {
-    const lp = document.getElementById('LP'); lp.style.opacity='0';
-    setTimeout(()=>{ lp.style.display='none'; document.getElementById('APP').style.display='block'; initFirebase(); renderParts(); updateStats(); }, 700);
-  } else {
-    const e = document.getElementById('lpErr'); e.classList.add('show');
-    document.getElementById('pwIn').value='';
-    setTimeout(()=>{ e.classList.remove('show'); }, 2600);
-  }
-}
-function doLogout() {
-  document.getElementById('APP').style.display='none';
-  const lp=document.getElementById('LP'); lp.style.display='flex'; lp.style.opacity='1';
-  document.getElementById('pwIn').value='';
-}
-function changePw() {
-  const cur=document.getElementById('pwCur').value, nw=document.getElementById('pwNew').value, cf=document.getElementById('pwConf').value;
-  const ok=document.getElementById('pwOk'), er=document.getElementById('pwErr');
-  ok.classList.remove('show'); er.classList.remove('show');
-  if (cur!==DB.pw){er.textContent='Fjalëkalimi aktual gabim';er.classList.add('show');return;}
-  if (nw.length<4){er.textContent='Minimumi 4 karaktere';er.classList.add('show');return;}
-  if (nw!==cf){er.textContent='Fjalëkalimet nuk përputhen';er.classList.add('show');return;}
-  DB.pw=nw; saveLocal(); ok.classList.add('show');
-  ['pwCur','pwNew','pwConf'].forEach(id=>document.getElementById(id).value='');
-  setTimeout(()=>ok.classList.remove('show'),3500);
-}
-
-// ══════════ NAV ══════════
-function showPg(name, btn) {
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('on'));
-  document.getElementById({home:'pgHome',parts:'pgParts',settings:'pgSettings'}[name]).classList.add('on');
-  if (btn) btn.classList.add('on');
-  if (name==='parts') { document.getElementById('ppQ').value=''; renderParts(); }
-}
-function goToParts() { showPg('parts', document.getElementById('nParts')); }
-
-// ══════════ HOME SEARCH ══════════
-function doHomeSearch(q) {
-  const res=document.getElementById('sRes'), clr=document.getElementById('sClr');
-  clr.style.display = q.length>0?'block':'none';
-  if (!q.trim()) { res.classList.remove('open'); return; }
-  const ql=q.toLowerCase();
-  const hits = DB.parts.filter(p=>
-    p.name?.toLowerCase().includes(ql)||p.car?.toLowerCase().includes(ql)||
-    p.cond?.toLowerCase().includes(ql)||String(p.year||'').includes(ql)
-  );
-  const hiRgx = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  const hi = s => es(s).replace(hiRgx,'<mark>$1</mark>');
-  if (!hits.length) { res.innerHTML=`<div class="s-empty">Nuk u gjet asnjë pjesë për "${es(q)}"</div>`; res.classList.add('open'); return; }
-  let html=`<div class="s-res-hdr">${hits.length} rezultat${hits.length!==1?'e':''}</div>`;
-  hits.slice(0,12).forEach(p=>{
-    const img=p.photo?`<img src="${p.photo}" alt="">`:`<span style="font-size:1.1rem">⚙</span>`;
-    const sub=[p.car,p.year].filter(Boolean).join(' · ');
-    html+=`<div class="s-item" onclick="jumpToPart('${p._id||''}')">
-      <div class="s-thumb">${img}</div>
-      <div class="s-info">
-        <div class="s-name">${hi(p.name||'')}</div>
-        <div class="s-sub">${sub?es(sub):''}${p.cond?' · '+es(p.cond):''}</div>
-      </div>
-      <div class="s-price">${p.price?'€'+parseFloat(p.price).toFixed(2):'—'}</div>
-    </div>`;
-  });
-  res.innerHTML=html; res.classList.add('open');
-}
-function jumpToPart(id) {
-  const q=document.getElementById('sIn').value; clearHS();
-  goToParts();
-  document.getElementById('ppQ').value=q; filterParts(q);
-}
-function clearHS() {
-  document.getElementById('sIn').value='';
-  document.getElementById('sRes').classList.remove('open');
-  document.getElementById('sClr').style.display='none';
-}
-document.addEventListener('click', e=>{ if(!e.target.closest('.sw')) document.getElementById('sRes').classList.remove('open'); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){closeLB();closeCF();closeMo('mP');} });
-
-// ══════════ RENDER PARTS ══════════
-function renderParts(filtered) {
-  const g=document.getElementById('partsGrid');
-  const list = filtered!==undefined ? filtered : DB.parts;
-  const cnt=document.getElementById('ppCnt');
-  cnt.innerHTML = filtered!==undefined
-    ? `Gjetur <em>${list.length}</em> nga ${DB.parts.length}`
-    : `Gjithsej <em>${DB.parts.length}</em> pjesë`;
-  if (!list.length) {
-    g.innerHTML=DB.parts.length===0
-      ?'<div class="empty"><div class="empty-ico">⚙</div><h3>Asnjë Pjesë</h3><p>shto pjesën e parë</p></div>'
-      :'<div class="empty"><div class="empty-ico">◌</div><h3>Asnjë Rezultat</h3><p>provo me fjalë të tjera</p></div>';
-    return;
-  }
-  g.innerHTML='';
-  list.forEach((p, li)=>{
-    const realIdx = filtered!==undefined ? DB.parts.indexOf(p) : li;
-    const c=document.createElement('div'); c.className='pc';
-    c.style.animationDelay = (li*0.04)+'s';
-    const col=condColor(p.cond);
-    const imgHtml = p.photo
-      ?`<div class="pc-img has-photo" onclick="openLB('${p.photo}')"><img src="${p.photo}" alt="${es(p.name||'')}"><div class="pc-zoom-badge">✦ Zmadhо</div></div>`
-      :`<div class="pc-img"><span style="font-size:3rem;opacity:.15">⚙</span></div>`;
-    const condHtml=p.cond
-      ?`<div class="pc-cond" style="color:${col};background:${col}18;border:1px solid ${col}33">${es(p.cond)}</div>`:'';
-    const carHtml=(p.car||p.year)
-      ?`<div class="pc-car">${es([p.car,p.year].filter(Boolean).join(' · '))}</div>`:'';
-    c.innerHTML=`${imgHtml}
-    <div class="pc-body">
-      ${condHtml}
-      <div class="pc-name">${es(p.name||'—')}</div>
-      ${carHtml}
-      <div class="pc-price">${p.price?'€ '+parseFloat(p.price).toFixed(2):'—'}</div>
-      <div class="pc-date">📅 ${fmtDate(p.addedAt)}</div>
-      <div class="pc-acts">
-        <button class="btn-s" style="font-size:.67rem;padding:6px 10px" onclick="openEP(${realIdx})">✎ Ndrysho</button>
-        <button class="btn-d" onclick="delP(${realIdx},'${p._id||''}')">✕ Fshi</button>
-      </div>
-    </div>`;
-    g.appendChild(c);
-  });
-}
-function filterParts(q) {
-  if (!q.trim()) { renderParts(); return; }
-  const ql=q.toLowerCase();
-  renderParts(DB.parts.filter(p=>
-    p.name?.toLowerCase().includes(ql)||p.car?.toLowerCase().includes(ql)||
-    p.cond?.toLowerCase().includes(ql)||String(p.year||'').includes(ql)
-  ));
-}
-
-// ══════════ CRUD ══════════
-function openAP() {
-  editP=null; curPhoto=null;
-  document.getElementById('mPt').textContent='Shto Pjesë të Re';
-  ['pCar','pYear','pName','pPrice'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('pCond').value='';
-  document.getElementById('pPrev').style.display='none';
-  document.getElementById('mP').classList.add('open');
-}
-function openEP(pi) {
-  editP=pi; const p=DB.parts[pi];
-  document.getElementById('mPt').textContent='Ndrysho Pjesën';
-  document.getElementById('pCar').value=p.car||'';
-  document.getElementById('pYear').value=p.year||'';
-  document.getElementById('pName').value=p.name||'';
-  document.getElementById('pCond').value=p.cond||'';
-  document.getElementById('pPrice').value=p.price||'';
-  curPhoto=p.photo||null;
-  const pv=document.getElementById('pPrev');
-  if(p.photo){pv.src=p.photo;pv.style.display='block';}else pv.style.display='none';
-  document.getElementById('mP').classList.add('open');
-}
-function handleImg(e) {
-  const f=e.target.files[0]; if(!f) return;
-  new FileReader().onload=ev=>{
-    curPhoto=ev.target.result;
-    const pv=document.getElementById('pPrev'); pv.src=curPhoto; pv.style.display='block';
-  }, (new FileReader()).readAsDataURL(f);
-  // fix: correct FileReader usage
-  const fr=new FileReader();
-  fr.onload=ev=>{curPhoto=ev.target.result;const pv=document.getElementById('pPrev');pv.src=curPhoto;pv.style.display='block';};
-  fr.readAsDataURL(f);
-}
 function saveP() {
-  const n=document.getElementById('pName').value.trim();
-  if(!n){notif('Shkruaj emrin e pjesës','er');return;}
-  const part={
-    car:document.getElementById('pCar').value.trim(),
-    year:document.getElementById('pYear').value.trim(),
-    name:n, cond:document.getElementById('pCond').value,
-    price:document.getElementById('pPrice').value, photo:curPhoto,
-    addedAt: editP!==null?(DB.parts[editP].addedAt||new Date().toISOString()):new Date().toISOString()
-  };
-  if(editP!==null){ updatePart(DB.parts[editP]._id, part); notif('✓ Pjesa u ndryshua'); }
-  else { pushPart(part); notif('✓ Pjesa u shtua'); }
-  closeMo('mP');
-  document.getElementById('ppQ').value='';
-}
-function delP(pi, fbId) {
-  _cfCb=()=>{ removePart(fbId, pi); const q=document.getElementById('ppQ').value; q?filterParts(q):renderParts(); notif('Pjesa u fshi','er'); };
-  document.getElementById('cfOv').classList.add('open');
-}
-
-// ══════════ LIGHTBOX ══════════
-function openLB(src) { document.getElementById('lbImg').src=src; document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeLB() { document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
-
-// ══════════ CONFIRM ══════════
-document.getElementById('cfYes').onclick=()=>{ if(_cfCb)_cfCb(); closeCF(); };
-function closeCF() { document.getElementById('cfOv').classList.remove('open'); _cfCb=null; }
-
-// ══════════ MODAL / NOTIF ══════════
-function closeMo(id) { document.getElementById(id).classList.remove('open'); }
-function notif(msg,t='ok') {
-  const n=document.getElementById('notif'); n.textContent=msg;
-  n.className='notif '+t+' show';
-  setTimeout(()=>n.className='notif',3200);
+    const name = document.getElementById('pName').value;
+    if (!name) return;
+    const part = {
+        name,
+        car: document.getElementById('pCar').value,
+        price: document.getElementById('pPrice').value,
+        photo: curPhoto,
+        addedAt: new Date().toISOString()
+    };
+    
+    const fb = window._firebase;
+    if (fb && fb.useFirebase) {
+        fb.set(fb.push(fb.dbRef), part);
+    }
+    closeMo();
+    notif("U ruajt!");
 }
 
-// INIT
-document.getElementById('pwIn').focus();
+function delP(id, index) {
+    if(!confirm("A do ta fshish?")) return;
+    const fb = window._firebase;
+    if (fb && fb.useFirebase && id !== 'undefined') {
+        fb.remove(fb.ref(fb.database, 'autopjes/parts/' + id));
+    }
+}
+
+function doLogin() {
+    if (document.getElementById('pwIn').value === DB.pw) {
+        document.getElementById('LP').style.display = 'none';
+        document.getElementById('APP').style.display = 'block';
+        initFirebase();
+    } else {
+        document.getElementById('lpErr').style.display = 'block';
+    }
+}
+
+function doLogout() { location.reload(); }
+function showPg(id) {
+    document.querySelectorAll('.pg').forEach(p => p.style.display = 'none');
+    document.getElementById('pg' + id.charAt(0).toUpperCase() + id.slice(1)).style.display = 'block';
+}
+function openAP() { document.getElementById('mP').classList.add('open'); }
+function closeMo() { document.getElementById('mP').classList.remove('open'); curPhoto=null; }
+function notif(m) { 
+    const n = document.getElementById('notif'); n.textContent = m; n.classList.add('show');
+    setTimeout(() => n.classList.remove('show'), 2000);
+}
 </script>
 </body>
 </html>
