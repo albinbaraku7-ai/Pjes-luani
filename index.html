@@ -5,88 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auto Pjes Luani</title>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-/* 🔴 FILL THIS */
-const firebaseConfig = {
-  apiKey: "PASTE",
-  authDomain: "PASTE",
-  databaseURL: "PASTE",
-  projectId: "PASTE",
-  storageBucket: "PASTE"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const storage = getStorage(app);
-const auth = getAuth(app);
-
-const partsRef = ref(db, "parts");
-
-/* LOGIN */
-window.login = async () => {
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    loadData();
-  } catch {
-    alert("Login gabim");
-  }
-};
-
-/* UPLOAD FOTO */
-async function upload(file){
-  const r = sRef(storage, "img/" + Date.now() + file.name);
-  await uploadBytes(r, file);
-  return await getDownloadURL(r);
-}
-
-/* ADD */
-window.addPart = async () => {
-  const name = document.getElementById("name").value;
-  const file = document.getElementById("file").files[0];
-
-  let photo = "";
-  if(file) photo = await upload(file);
-
-  push(partsRef, { name, photo });
-};
-
-/* DELETE */
-window.del = (id) => {
-  remove(ref(db, "parts/" + id));
-};
-
-/* REALTIME */
-function loadData(){
-  onValue(partsRef, snap => {
-    const data = snap.val() || {};
-    const box = document.getElementById("list");
-    box.innerHTML = "";
-
-    Object.entries(data).forEach(([id,p])=>{
-      box.innerHTML += `
-        <div class="card">
-          <img src="${p.photo}" />
-          <div>
-            <b>${p.name}</b>
-            <button onclick="del('${id}')">Fshi</button>
-          </div>
-        </div>
-      `;
-    });
-  });
-}
-</script>
-
 <style>
 body{
   margin:0;
@@ -95,18 +13,22 @@ body{
   color:#fff;
 }
 
+/* LOGIN */
 #login{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
+  background: radial-gradient(circle, #1a1a1a, #000);
 }
 
 .box{
   width:300px;
-  background:#1a1a1a;
-  padding:20px;
-  border-radius:12px;
+  background:#1c1c1c;
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(255,0,0,0.3);
 }
 
 input{
@@ -116,6 +38,7 @@ input{
   border:none;
   border-radius:8px;
   font-size:16px;
+  font-weight:bold;
 }
 
 button{
@@ -127,15 +50,26 @@ button{
   font-weight:bold;
   border:none;
   border-radius:8px;
+  cursor:pointer;
 }
 
+button:hover{
+  background:#fff;
+  color:#ff1e1e;
+}
+
+/* APP */
 #app{
   display:none;
   padding:20px;
 }
 
-h1{
-  color:#ff1e1e;
+header{
+  background:linear-gradient(90deg,#8b0000,#ff1a1a);
+  padding:20px;
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
 }
 
 .card{
@@ -145,34 +79,52 @@ h1{
   border-left:5px solid #ff1e1e;
   border-radius:10px;
 }
-
-.card img{
-  width:100%;
-  border-radius:8px;
-}
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
 <div id="login">
   <div class="box">
-    <h2>LOGIN</h2>
-    <input id="email" placeholder="Email">
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Hyr</button>
+    <h2>FJALËKALIMI</h2>
+    <input type="password" id="pass" placeholder="Shkruaj password">
+    <button onclick="login()">HYR</button>
+    <p id="msg"></p>
   </div>
 </div>
 
+<!-- APP -->
 <div id="app">
-  <h1>Auto Pjes Luani</h1>
 
-  <input id="name" placeholder="Emri i pjesës">
-  <input type="file" id="file">
-  <button onclick="addPart()">Shto</button>
+<header>LUANI AUTO PJES</header>
 
-  <div id="list"></div>
+<div style="padding:20px;">
+  <h2>Mirë se erdhe 👋</h2>
+  <p>Sistemi është aktiv</p>
+
+  <div class="card">
+    🔧 Këtu mund të shtosh më vonë pjesët e makinave
+  </div>
 </div>
+
+</div>
+
+<script>
+
+function login(){
+  let pass = document.getElementById("pass").value;
+
+  if(pass === "1234"){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    document.getElementById("msg").innerText = "❌ Password gabim";
+    document.getElementById("msg").style.color = "red";
+  }
+}
+
+</script>
 
 </body>
 </html>
