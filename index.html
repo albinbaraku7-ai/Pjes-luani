@@ -11,15 +11,44 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDemo-AutoPjesLuani-placeholder",
+  apiKey: "AIzaSyCURAn1kdrdt_O43STZeiamXKdpNtIX_yc",
   authDomain: "autopjesluani.firebaseapp.com",
-  databaseURL: "https://autopjesluani-default-rtdb.firebaseio.com",
+  databaseURL: "https://autopjesluani-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "autopjesluani",
-  storageBucket: "autopjesluani.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000"
+  storageBucket: "autopjesluani.firebasestorage.app",
+  messagingSenderId: "669643033219",
+  appId: "1:669643033219:web:5928dad21a9608ebdf29b6",
+  measurementId: "G-T313JFLMNX"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCURAn1kdrdt_O43STZeiamXKdpNtIX_yc",
+  authDomain: "autopjesluani.firebaseapp.com",
+  databaseURL: "https://autopjesluani-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "autopjesluani",
+  storageBucket: "autopjesluani.firebasestorage.app",
+  messagingSenderId: "669643033219",
+  appId: "1:669643033219:web:5928dad21a9608ebdf29b6",
+  measurementId: "G-T313JFLMNX"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 let app, database, dbRef;
 let useFirebase = false;
