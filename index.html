@@ -28,8 +28,7 @@ let useFirebase = false;
 let database, dbRef;
 
 try {
-if (firebaseConfig.apiKey) {
-const app = initializeApp(firebaseConfig);
+
 database = getDatabase(app);
 dbRef = ref(database, ‘autopjes/parts’);
 useFirebase = true;
