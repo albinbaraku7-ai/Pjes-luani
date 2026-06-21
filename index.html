@@ -6,6 +6,7 @@
 <title>Auto Pjes Luani</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -28,8 +29,9 @@ try {
   database = getDatabase(app);
   dbRef = ref(database, 'autopjes/parts');
   useFirebase = true;
+  console.log("Firebase OK");
 } catch(e) {
-  console.error("Firebase gabim:", e);
+  console.error("Firebase error:", e);
 }
 
 window._fb = { useFirebase, database, ref, push, set, onValue, remove, dbRef };
@@ -46,40 +48,44 @@ window._fb = { useFirebase, database, ref, push, set, onValue, remove, dbRef };
   --sh: rgba(0,0,0,0.85);
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { height:100%; background:var(--bg); color:var(--wh); font-family:'Barlow',sans-serif; overflow-x:hidden; }
+*,*::before,*::after {margin:0;padding:0;box-sizing:border-box;}
+html,body {height:100%; background:var(--bg); color:var(--wh); font-family:'Barlow',sans-serif; overflow-x:hidden;}
 
-.ag { position:fixed; pointer-events:none; z-index:0; border-radius:50%; filter:blur(140px); }
-.ag1 { width:700px; height:700px; background:var(--red); top:-280px; right:-280px; opacity:.08; }
-.ag2 { width:500px; height:500px; background:#fff; bottom:-200px; left:-200px; opacity:.02; }
+.ag {position:fixed; pointer-events:none; z-index:0; border-radius:50%; filter:blur(140px);}
+.ag1 {width:700px;height:700px;background:var(--red);top:-280px;right:-280px;opacity:.08;}
+.ag2 {width:500px;height:500px;background:#fff;bottom:-200px;left:-200px;opacity:.02;}
 
-#LP { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:var(--bg); }
-.lp-card { background:var(--gl); backdrop-filter:blur(40px); border:1px solid var(--bd2); border-radius:20px; padding:42px 36px; }
+#LP {position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:var(--bg);transition:opacity .8s;}
+.lp-wrap {text-align:center;width:100%;max-width:400px;padding:20px;}
+.lp-card {background:var(--gl);backdrop-filter:blur(40px);border:1px solid var(--bd2);border-radius:20px;padding:42px 36px;box-shadow:0 40px 80px var(--sh);}
+.lp-btn {width:100%;padding:15px;background:var(--red);border:none;border-radius:10px;color:#fff;font-weight:800;letter-spacing:5px;text-transform:uppercase;cursor:pointer;}
+.lp-err {margin-top:12px;padding:11px 14px;background:rgba(232,25,44,.12);border:1px solid var(--bdr);border-radius:8px;color:var(--red3);display:none;}
+.lp-err.show {display:block;}
 
-#APP { display:none; min-height:100vh; position:relative; z-index:1; }
-.sync-bar { text-align:center; padding:9px 20px; background:rgba(232,25,44,.06); border-bottom:1px solid var(--bdr); font-size:.68rem; font-weight:600; letter-spacing:3px; color:var(--wh4); text-transform:uppercase; }
-.sync-bar.live { background:rgba(255,255,255,.03); }
+#APP {display:none;min-height:100vh;position:relative;z-index:1;}
+.sync-bar {text-align:center;padding:9px 20px;background:rgba(232,25,44,.06);border-bottom:1px solid var(--bdr);font-size:.68rem;font-weight:600;letter-spacing:3px;color:var(--wh4);text-transform:uppercase;}
+.sync-bar.live {background:rgba(255,255,255,.03);}
 
-.hdr { position:sticky; top:0; z-index:600; background:rgba(5,5,5,.95); backdrop-filter:blur(32px); border-bottom:1px solid var(--bd); padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:66px; }
+.hdr {position:sticky;top:0;z-index:600;height:66px;background:rgba(5,5,5,.9);backdrop-filter:blur(32px);border-bottom:1px solid var(--bd);padding:0 28px;display:flex;align-items:center;justify-content:space-between;}
+.nbtn {padding:8px 15px;border-radius:8px;background:transparent;color:var(--wh3);cursor:pointer;}
+.nbtn.on {background:rgba(232,25,44,.12);color:var(--red3);}
 
-.pg { display:none; }
-.pg.on { display:block; }
+.pg {display:none;animation:fade .3s;}
+.pg.on {display:block;}
+@keyframes fade {from{opacity:0} to{opacity:1}}
 
-.hero { padding:80px 20px 40px; text-align:center; }
-.hero-h1 { font-family:'Barlow Condensed',sans-serif; font-size:3.5rem; font-weight:800; letter-spacing:4px; text-transform:uppercase; }
-.hero-h1 em { color:var(--red); }
+.hero {padding:90px 28px 68px;text-align:center;}
+.hero-h1 {font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,8vw,6.5rem);font-weight:800;letter-spacing:5px;text-transform:uppercase;}
+.hero-h1 em {color:var(--red);}
 
-.grid { padding:20px; display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px; }
+.grid {padding:20px 28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
 
-.pc { background:var(--gl); border:1px solid var(--bd); border-radius:16px; padding:16px; transition:all .3s; }
-.pc:hover { transform:translateY(-6px); box-shadow:0 15px 30px rgba(0,0,0,0.6); }
+.pc {background:var(--gl);border:1px solid var(--bd);border-radius:16px;overflow:hidden;transition:all .3s;}
+.pc:hover {transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.7);}
 
-.mo { position:fixed; inset:0; z-index:800; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; }
-.mo.open { display:flex; }
-.mo-box { background:#111; border:1px solid var(--bd2); border-radius:16px; padding:25px; width:90%; max-width:460px; max-height:90vh; overflow-y:auto; }
-
-.notif { position:fixed; bottom:20px; right:20px; background:#111; border:1px solid var(--red); padding:12px 20px; border-radius:8px; z-index:9999; transform:translateX(150%); transition:.4s; }
-.notif.show { transform:translateX(0); }
+.mo {position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;}
+.mo.open {display:flex;}
+.mo-box {background:#111;border:1px solid var(--bd2);border-radius:16px;padding:25px;width:90%;max-width:460px;max-height:92vh;overflow-y:auto;}
 </style>
 </head>
 <body>
@@ -89,28 +95,31 @@ html, body { height:100%; background:var(--bg); color:var(--wh); font-family:'Ba
 
 <!-- LOGIN -->
 <div id="LP">
-  <div class="lp-card" style="max-width:380px; width:90%;">
-    <div style="text-align:center; margin-bottom:25px;">
-      <div style="font-size:2.8rem; font-weight:800; letter-spacing:6px;">AUTO PJES <span style="color:#e8192c;">LUANI</span></div>
+  <div class="lp-wrap">
+    <div class="lp-logo" style="margin-bottom:30px;">
+      <div class="lp-name" style="font-size:2.4rem;">AUTO PJES <em>LUANI</em></div>
     </div>
-    <input type="password" id="pwIn" placeholder="Fjalëkalimi" style="width:100%; padding:14px; background:#222; border:1px solid #444; border-radius:8px; color:white; font-size:1rem;" onkeydown="if(event.key==='Enter') doLogin()">
-    <button onclick="doLogin()" style="width:100%; margin-top:15px; padding:14px; background:#e8192c; border:none; border-radius:8px; color:white; font-weight:700; font-size:1.1rem;">HYR</button>
-    <div id="lpErr" style="color:#ff4d5e; text-align:center; margin-top:12px; display:none;">Fjalëkalimi i gabuar</div>
+    <div class="lp-card">
+      <div class="lp-ctitle" style="margin-bottom:8px;">Hyrje e Sigurt</div>
+      <input type="password" id="pwIn" placeholder="Shkruaj fjalëkalimin" style="width:100%;padding:14px;background:#222;border:1px solid #444;border-radius:10px;color:white;font-size:1rem;margin-bottom:15px;" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="lp-btn" onclick="doLogin()">HYR NË SISTEM</button>
+      <div class="lp-err" id="lpErr">Fjalëkalimi është i gabuar</div>
+    </div>
   </div>
 </div>
 
 <!-- APP -->
 <div id="APP">
-  <div class="sync-bar" id="syncBar"><em>⬤</em> Duke u lidhur me serverin...</div>
+  <div class="sync-bar" id="syncBar"><em>⬤</em> Duke u lidhur...</div>
 
   <header class="hdr">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <div style="font-size:1.4rem; font-weight:800; letter-spacing:3px;">AUTO PJES <span style="color:#e8192c;">LUANI</span></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="hdr-title">AUTO PJES <em>LUANI</em></div>
     </div>
-    <div style="display:flex; gap:8px;">
-      <button onclick="showPg('home')" style="padding:8px 16px; background:rgba(255,255,255,0.1); border:none; border-radius:8px; color:white;">Ballina</button>
-      <button onclick="showPg('parts')" style="padding:8px 16px; background:rgba(255,255,255,0.1); border:none; border-radius:8px; color:white;">Pjesët</button>
-      <button onclick="doLogout()" style="padding:8px 16px; background:#e8192c; border:none; border-radius:8px; color:white;">Dil</button>
+    <div>
+      <button class="nbtn on" onclick="showPg('home',this)">Ballina</button>
+      <button class="nbtn" onclick="showPg('parts',this)">Pjesët</button>
+      <button onclick="doLogout()" style="background:var(--red);color:white;border:none;padding:8px 16px;border-radius:8px;">Dil</button>
     </div>
   </header>
 
@@ -118,38 +127,80 @@ html, body { height:100%; background:var(--bg); color:var(--wh); font-family:'Ba
   <div class="pg on" id="pgHome">
     <div class="hero">
       <div class="hero-h1">AUTO PJES <em>LUANI</em></div>
-      <p style="margin-top:20px; color:var(--wh3);">Sistemi i Menaxhimit të Pjesëve</p>
     </div>
-    <div class="grid" id="gridHome"></div>
+    <div class="grid" id="grid"></div>
   </div>
 
   <!-- PARTS -->
   <div class="pg" id="pgParts">
-    <div style="padding:20px; font-size:1.4rem; font-weight:700; text-align:center; border-bottom:1px solid #333;">Lista e Pjesëve</div>
+    <div style="padding:25px;font-size:1.5rem;font-weight:700;text-align:center;">Lista e Pjesëve</div>
     <div class="grid" id="gridParts"></div>
   </div>
 </div>
 
 <script>
-// Data
+// ==================== DATA & FUNCTIONS ====================
 let DB = JSON.parse(localStorage.getItem('apl_wr2') || '{"parts":[],"pw":"luani123"}');
 
 function saveLoc() { localStorage.setItem('apl_wr2', JSON.stringify(DB)); }
 
-// Render
-function renderParts(containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-
+function renderParts(container = 'grid') {
+  const g = document.getElementById(container);
+  g.innerHTML = '';
+  
   if (DB.parts.length === 0) {
-    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; color:#666;">Asnjë pjesë ende. Shto pjesë të reja.</div>`;
+    g.innerHTML = `<div style="grid-column:1/-1;padding:80px 20px;text-align:center;color:#777;">Asnjë pjesë. Shto të parën!</div>`;
     return;
   }
 
-  DB.parts.forEach((p, i) => {
+  DB.parts.forEach(p => {
     const card = document.createElement('div');
     card.className = 'pc';
     card.innerHTML = `
-      <div style="font-weight:700; font-size:1.15rem;">${p.name || 'Pa emër'}</div>
-      <div style="color:#aaa; margin:6px 0;">${p.car || ''} ${p.year || ''}</div>
-      <div style="color:#
+      <div style="padding:16px;">
+        <div style="font-weight:700;font-size:1.2rem;">${p.name || 'Pa emër'}</div>
+        <div style="color:#aaa;margin:6px 0;">${p.car || ''} ${p.year || ''}</div>
+        <div style="color:var(--red);font-size:1.4rem;font-weight:700;">€ ${Number(p.price||0).toFixed(2)}</div>
+      </div>
+    `;
+    g.appendChild(card);
+  });
+}
+
+// Navigation
+function showPg(page, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById('pg' + page.charAt(0).toUpperCase() + page.slice(1)).classList.add('on');
+  if (btn) {
+    document.querySelectorAll('.nbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+  }
+  if (page === 'parts') renderParts('gridParts');
+}
+
+// Login
+function doLogin() {
+  const pwInput = document.getElementById('pwIn');
+  if (pwInput.value === DB.pw) {
+    document.getElementById('LP').style.display = 'none';
+    document.getElementById('APP').style.display = 'block';
+    renderParts('grid');
+  } else {
+    const err = document.getElementById('lpErr');
+    err.classList.add('show');
+    pwInput.value = '';
+    setTimeout(() => err.classList.remove('show'), 2800);
+  }
+}
+
+function doLogout() {
+  document.getElementById('APP').style.display = 'none';
+  document.getElementById('LP').style.display = 'flex';
+  document.getElementById('pwIn').value = '';
+}
+
+// Init
+document.getElementById('pwIn').focus();
+</script>
+</body>
+</html>
